@@ -17,8 +17,6 @@ Com o docker e o docker-compose instalados, você deve rodar o comando abaixo pa
     docker-compose up -d
 ```
 
-Copie o arquivo .env.example e preencha com 
-
 O pgadmin vai estar disponível em `localhost:5050`.
 Credenciais de acesso ao pgadmin: `gorillaz@fatec.com` e `gorillaz_adm`
 
