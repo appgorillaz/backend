@@ -48,9 +48,6 @@ public class User implements UserDetails {
 
     private int semester;
 
-//    @Column(nullable = false, columnDefinition = "BOOLEAN default 'FALSE'")
-//    private boolean isAdm;
-
     private UserRole role;
 
     public User(String name, String email, String password, Gender gender, String course, UserRole role) {
