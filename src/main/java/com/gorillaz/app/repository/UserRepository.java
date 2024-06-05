@@ -1,9 +1,13 @@
 package com.gorillaz.app.repository;
 
-import com.gorillaz.app.model.User;
+import com.gorillaz.app.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
+import org.springframework.security.core.userdetails.UserDetails;
 
-public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findUserById(Long id);
+import java.util.List;
+import java.util.UUID;
+
+public interface UserRepository extends JpaRepository<User, UUID> {
+    List<User> findUserById(UUID id);
+    UserDetails findByEmail(String email);
 }
