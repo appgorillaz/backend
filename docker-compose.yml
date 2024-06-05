@@ -1,0 +1,29 @@
+networks:
+  postgres-network:
+
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gorillaz
+    ports:
+      - '5432:5432'
+    networks:
+      - postgres-network
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: gorillaz@fatec.com
+      PGADMIN_DEFAULT_PASSWORD: gorillaz_adm
+    ports:
+      - '5050:80'
+    networks:
+      - postgres-network
+
