@@ -31,6 +31,12 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity getAllPosts() {
-        return ResponseEntity.ok("Oi");
+        var posts = postService.getAll();
+
+        if (posts.isEmpty()) {
+            return ResponseEntity.ok().body("");
+        }
+
+        return ResponseEntity.ok().body(posts);
     }
 }
