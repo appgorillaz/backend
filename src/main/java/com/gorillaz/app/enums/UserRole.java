@@ -1,15 +1,15 @@
 package com.gorillaz.app.enums;
 
-public enum UserRole {
-    ADMIN("admin"), USER("user");
+import lombok.Getter;
 
-    private String role;
+@Getter
+public enum UserRole {
+    ADMIN("admin"), USER("user"), GUEST("guest");
+
+    private final String role;
 
    UserRole(String role) {
         this.role = role;
     }
 
-   public String getRole() {
-        return role;
-   }
 }
