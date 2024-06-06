@@ -2,8 +2,9 @@ package com.gorillaz.app.service;
 
 import com.gorillaz.app.domain.post.Post;
 import com.gorillaz.app.repository.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PostService {
@@ -14,5 +15,9 @@ public class PostService {
     }
     public Post save(Post post) {
         return postRepository.save(post);
+    }
+
+    public List<Post> getAll() {
+        return postRepository.findAll();
     }
 }
