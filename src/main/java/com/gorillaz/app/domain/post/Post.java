@@ -27,16 +27,17 @@ public class Post {
     private String text;
 
     @ManyToOne
-    @JoinColumn(name = "adm_id")
+    @JoinColumn(name = "adm_id", referencedColumnName = "id")
     private User admId;
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event eventId;
 
-    public Post(String title, String subtitle, String text, LocalDate postDate) {
+    public Post(String title, String subtitle, String text, LocalDate postDate, User userId) {
         this.title = title;
         this.subtitle = subtitle;
         this.text = text;
         this.postDate = postDate;
+        this.admId = userId;
     }
 }

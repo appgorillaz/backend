@@ -1,5 +1,6 @@
 package com.gorillaz.app.domain.user;
 
+import com.gorillaz.app.domain.post.Post;
 import com.gorillaz.app.enums.Gender;
 import com.gorillaz.app.enums.Period;
 import com.gorillaz.app.enums.UserRole;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity(name = "users")
@@ -49,6 +51,9 @@ public class User implements UserDetails {
     private int semester;
 
     private UserRole role;
+
+    @OneToMany(mappedBy = "admId")
+    Set<Post> posts;
 
     public User(String name, String email, String password, Gender gender, String course, UserRole role) {
         this.name = name;
