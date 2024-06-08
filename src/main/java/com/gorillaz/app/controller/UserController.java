@@ -5,7 +5,6 @@ import com.gorillaz.app.domain.user.AuthenticationDTO;
 import com.gorillaz.app.domain.user.LoginResponseDTO;
 import com.gorillaz.app.domain.user.RegisterDTO;
 import com.gorillaz.app.domain.user.User;
-import com.gorillaz.app.service.AuthService;
 import com.gorillaz.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +31,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("E-mail utilizado por outro usuário.");
 
         String passwordHashed = new BCryptPasswordEncoder().encode(data.password());
-        User user = new User(data.name(), data.email(), passwordHashed, data.gender(), data.course(), data.role());
+        User user = new User(data.name(), data.email(), passwordHashed, data.ra(), data.gender(), data.course(), data.period(), data.isRepresentative(), data.role());
 
         var userCreated = this.userService.save(user);
 

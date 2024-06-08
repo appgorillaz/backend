@@ -55,12 +55,15 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "admId")
     Set<Post> posts;
 
-    public User(String name, String email, String password, Gender gender, String course, UserRole role) {
+    public User(String name, String email, String password, String ra, Gender gender, String course, Period period, boolean isRepresentative, UserRole role) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.ra = ra;
         this.gender = gender;
         this.course = course;
+        this.period = period;
+        this.isRepresentative = isRepresentative;
         this.role = role;
     }
 
