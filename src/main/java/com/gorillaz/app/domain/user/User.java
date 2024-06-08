@@ -1,5 +1,6 @@
 package com.gorillaz.app.domain.user;
 
+import com.gorillaz.app.domain.event.Event;
 import com.gorillaz.app.domain.post.Post;
 import com.gorillaz.app.enums.Gender;
 import com.gorillaz.app.enums.Period;
@@ -54,6 +55,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "admId")
     Set<Post> posts;
+
+    @OneToMany(mappedBy = "admId")
+    Set<Event> events;
 
     public User(String name, String email, String password, String ra, Gender gender, String course, Period period, boolean isRepresentative, UserRole role) {
         this.name = name;
