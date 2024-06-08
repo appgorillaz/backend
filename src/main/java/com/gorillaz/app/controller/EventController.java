@@ -2,7 +2,9 @@ package com.gorillaz.app.controller;
 
 import com.gorillaz.app.domain.event.Event;
 import com.gorillaz.app.domain.event.NewEventDTO;
+import com.gorillaz.app.service.AuthService;
 import com.gorillaz.app.service.EventService;
+import com.gorillaz.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +20,19 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping
     public ResponseEntity create(@RequestBody @Validated NewEventDTO data) {
-        // TODO pegar adm_id do user atual
-        Event event = new Event(data.eventName(), data.startDate(), data.endDate(), data.location(), data.type());
+
+        var user = userService.getAuthenticatedUser();
+
+        if (user == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Event event = new Event(data.eventName(), data.startDate(), data.endDate(), data.location(), data.type(), user);
 
         var eventCreated = eventService.save(event);
 
