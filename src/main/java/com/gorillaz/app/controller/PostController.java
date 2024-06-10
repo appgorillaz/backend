@@ -1,9 +1,10 @@
 package com.gorillaz.app.controller;
 
+import com.gorillaz.app.domain.event.Event;
 import com.gorillaz.app.domain.post.NewPostDTO;
 import com.gorillaz.app.domain.post.Post;
 import com.gorillaz.app.domain.user.User;
-import com.gorillaz.app.service.AuthService;
+import com.gorillaz.app.service.EventService;
 import com.gorillaz.app.service.PostService;
 import com.gorillaz.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/post")
@@ -21,6 +24,9 @@ public class PostController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EventService eventService;
+
     @PostMapping
     public ResponseEntity newPost(@RequestBody @Validated NewPostDTO data) {
 
@@ -30,8 +36,18 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado");
         }
 
-        Post post = new Post(data.title(), data.subtitle(), data.text(), data.postDate(), user);
+        Event eventId = data.eventId();
 
+        if (eventId != null) {
+            Optional<Event> event = eventService.findEventById(data.eventId().getId());
+
+            if (event.isEmpty()) {
+               return ResponseEntity.badRequest().body("Evento inválido!");
+            }
+            eventId = event.get();
+        }
+
+        Post post = new Post(data.title(), data.subtitle(), data.text(), data.postDate(), user, eventId);
         var postCreated = this.postService.save(post);
 
         if (postCreated == null) {

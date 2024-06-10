@@ -1,11 +1,13 @@
 package com.gorillaz.app.domain.event;
 
+import com.gorillaz.app.domain.post.Post;
 import com.gorillaz.app.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -31,6 +33,13 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "adm_id", referencedColumnName = "id")
     private User admId;
+
+    @OneToMany(mappedBy = "eventId")
+    Set<Post> posts;
+
+    public Event(String id) {
+        this.id = UUID.fromString(id);
+    }
 
    public Event(String title, Timestamp startDate, Timestamp endDate, String location, String type, User admId) {
        this.title = title;
