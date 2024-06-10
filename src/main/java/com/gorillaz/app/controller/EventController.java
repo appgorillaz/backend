@@ -2,7 +2,6 @@ package com.gorillaz.app.controller;
 
 import com.gorillaz.app.domain.event.Event;
 import com.gorillaz.app.domain.event.NewEventDTO;
-import com.gorillaz.app.service.AuthService;
 import com.gorillaz.app.service.EventService;
 import com.gorillaz.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
