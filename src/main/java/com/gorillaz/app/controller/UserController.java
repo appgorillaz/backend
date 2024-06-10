@@ -1,10 +1,7 @@
 package com.gorillaz.app.controller;
 
 import com.gorillaz.app.config.security.TokenService;
-import com.gorillaz.app.domain.user.AuthenticationDTO;
-import com.gorillaz.app.domain.user.LoginResponseDTO;
-import com.gorillaz.app.domain.user.RegisterDTO;
-import com.gorillaz.app.domain.user.User;
+import com.gorillaz.app.domain.user.*;
 import com.gorillaz.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +21,13 @@ public class UserController {
     private UserService userService;
     @Autowired
     private TokenService tokenService;
+
+    @GetMapping("/me")
+    public ResponseEntity<UserProfileDTO> getUserProfile() {
+        User user = userService.getAuthenticatedUser();
+        UserProfileDTO userProfile = new UserProfileDTO(user.getName(), user.getEmail(), user.getGender(), user.getRa(), user.getCourse(), user.getPeriod(), user.getSemester(), user.isRepresentative());
+        return ResponseEntity.ok().body(userProfile);
+    }
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Validated RegisterDTO data) {
