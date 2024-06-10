@@ -4,6 +4,9 @@ import com.gorillaz.app.domain.event.Event;
 import com.gorillaz.app.repository.EventRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 public class EventService {
     private final EventRepository eventRepository;
@@ -14,5 +17,9 @@ public class EventService {
 
     public Event save(Event event) {
        return eventRepository.save(event);
+    }
+
+    public Optional<Event> findEventById(UUID eventId) {
+        return eventRepository.findById(eventId);
     }
 }
