@@ -41,9 +41,10 @@ public class PostController {
         if (eventId != null) {
             Optional<Event> event = eventService.findEventById(data.eventId().getId());
 
-            if (event.isPresent()) {
-                eventId = event.get();
+            if (event.isEmpty()) {
+               return ResponseEntity.badRequest().body("Evento inválido!");
             }
+            eventId = event.get();
         }
 
         Post post = new Post(data.title(), data.subtitle(), data.text(), data.postDate(), user, eventId);
