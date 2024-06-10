@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -22,9 +23,9 @@ public class Event {
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
-    private Timestamp startDate;
+    private LocalDateTime startDate;
     @Column(nullable = false)
-    private Timestamp endDate;
+    private LocalDateTime endDate;
     @Column(nullable = false)
     private String location;
     @Column(nullable = false)
@@ -41,7 +42,7 @@ public class Event {
         this.id = UUID.fromString(id);
     }
 
-   public Event(String title, Timestamp startDate, Timestamp endDate, String location, String type, User admId) {
+   public Event(String title, LocalDateTime startDate, LocalDateTime endDate, String location, String type, User admId) {
        this.title = title;
        this.startDate = startDate;
        this.endDate = endDate;

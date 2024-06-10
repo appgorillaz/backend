@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/event")
 public class EventController {
@@ -29,6 +31,12 @@ public class EventController {
 
         if (user == null) {
             return ResponseEntity.badRequest().build();
+        }
+
+        var currentDate = LocalDateTime.now();
+
+        if (data.startDate().isBefore(currentDate) || data.endDate().isBefore(currentDate)) {
+            return ResponseEntity.badRequest().body("A data de ínicio / término deve ser maior ou igual a data atual");
         }
 
         Event event = new Event(data.eventName(), data.startDate(), data.endDate(), data.location(), data.type(), user);
