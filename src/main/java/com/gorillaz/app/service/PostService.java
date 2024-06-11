@@ -5,6 +5,7 @@ import com.gorillaz.app.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PostService {
@@ -19,5 +20,9 @@ public class PostService {
 
     public List<Post> getAll() {
         return postRepository.findAll();
+    }
+
+    public Post getPost(UUID id) {
+        return postRepository.getPostById(id);
     }
 }

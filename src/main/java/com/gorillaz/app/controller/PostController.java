@@ -1,6 +1,7 @@
 package com.gorillaz.app.controller;
 
 import com.gorillaz.app.domain.event.Event;
+import com.gorillaz.app.domain.post.GetPostDTO;
 import com.gorillaz.app.domain.post.NewPostDTO;
 import com.gorillaz.app.domain.post.Post;
 import com.gorillaz.app.domain.user.User;
@@ -13,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/post")
@@ -47,6 +50,15 @@ public class PostController {
             eventId = event.get();
         }
 
+        var currentDate = LocalDate.now();
+
+        System.out.println("cur"+ currentDate);
+        System.out.println("post" + data.postDate());
+
+        if (data.postDate().isBefore(currentDate)) {
+           return ResponseEntity.badRequest().body("A data da postagem não pode ser maior que a data atual");
+        }
+
         Post post = new Post(data.title(), data.subtitle(), data.text(), data.postDate(), user, eventId);
         var postCreated = this.postService.save(post);
 
@@ -66,5 +78,18 @@ public class PostController {
         }
 
         return ResponseEntity.ok().body(posts);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GetPostDTO> getPost(@PathVariable UUID id) {
+        var post = postService.getPost(id);
+
+        if (post == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        GetPostDTO postDto = new GetPostDTO(post.getTitle(), post.getSubtitle(), post.getText(), post.getPostDate(), post.getAdmId().getName(), post.getEventId().getId());
+
+        return ResponseEntity.ok(postDto);
     }
 }
