@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
@@ -45,6 +46,15 @@ public class PostController {
                return ResponseEntity.badRequest().body("Evento inválido!");
             }
             eventId = event.get();
+        }
+
+        var currentDate = LocalDate.now();
+
+        System.out.println("cur"+ currentDate);
+        System.out.println("post" + data.postDate());
+
+        if (data.postDate().isBefore(currentDate)) {
+           return ResponseEntity.badRequest().body("A data da postagem não pode ser maior que a data atual");
         }
 
         Post post = new Post(data.title(), data.subtitle(), data.text(), data.postDate(), user, eventId);
