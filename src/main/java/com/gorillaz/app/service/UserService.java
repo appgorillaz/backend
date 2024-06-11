@@ -1,11 +1,17 @@
 package com.gorillaz.app.service;
 
 import com.gorillaz.app.domain.user.User;
+import com.gorillaz.app.domain.user.UserProfileDTO;
+import com.gorillaz.app.enums.Gender;
+import com.gorillaz.app.enums.Period;
 import com.gorillaz.app.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -36,4 +42,25 @@ public class UserService {
 
         return this.getUserByEmail(auth.getName());
     }
+
+    public Optional<User> update(UUID id, UserProfileDTO user) {
+
+        Optional<User> u = userRepository.findById(id);
+
+        if (u.isEmpty()) {
+            return Optional.empty();
+        }
+
+        u.get().setName(user.name());
+        u.get().setEmail(user.email());
+        u.get().setGender(user.gender());
+        u.get().setRa(user.ra());
+        u.get().setCourse(user.course());
+        u.get().setPeriod(user.period());
+        u.get().setRepresentative(user.representative());
+
+        User updated = userRepository.save(u.get());
+
+        return Optional.of(updated);
+   }
 }

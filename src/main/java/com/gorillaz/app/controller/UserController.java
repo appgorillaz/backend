@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -54,5 +56,23 @@ public class UserController {
         var token = tokenService.generateToken((User) auth.getPrincipal());
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<HttpStatus> updateProfile(@RequestBody UserProfileDTO userDto) {
+        User user = userService.getAuthenticatedUser();
+
+        if (user == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        var userId = user.getId();
+        Optional<User> update = userService.update(userId, userDto);
+
+        if (update.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.noContent().build();
     }
 }
