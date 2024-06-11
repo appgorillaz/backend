@@ -1,6 +1,7 @@
 package com.gorillaz.app.controller;
 
 import com.gorillaz.app.domain.event.Event;
+import com.gorillaz.app.domain.post.GetPostDTO;
 import com.gorillaz.app.domain.post.NewPostDTO;
 import com.gorillaz.app.domain.post.Post;
 import com.gorillaz.app.domain.user.User;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/post")
@@ -76,5 +78,18 @@ public class PostController {
         }
 
         return ResponseEntity.ok().body(posts);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GetPostDTO> getPost(@PathVariable UUID id) {
+        var post = postService.getPost(id);
+
+        if (post == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        GetPostDTO postDto = new GetPostDTO(post.getTitle(), post.getSubtitle(), post.getText(), post.getPostDate(), post.getAdmId().getName(), post.getEventId().getId());
+
+        return ResponseEntity.ok(postDto);
     }
 }
