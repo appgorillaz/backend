@@ -7,6 +7,7 @@ import com.gorillaz.app.enums.Period;
 import com.gorillaz.app.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -49,6 +50,8 @@ public class User implements UserDetails {
     @Column(name = "is_representative", nullable = false, columnDefinition = "BOOLEAN default 'FALSE'")
     private boolean isRepresentative;
 
+    @Column(columnDefinition = "smallint", nullable = false)
+    @ColumnDefault("1")
     private int semester;
 
     private UserRole role;
@@ -59,13 +62,14 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "admId")
     Set<Event> events;
 
-    public User(String name, String email, String password, String ra, Gender gender, String course, Period period, boolean isRepresentative, UserRole role) {
+    public User(String name, String email, String password, String ra, Gender gender, String course, int semester, Period period, boolean isRepresentative, UserRole role) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.ra = ra;
         this.gender = gender;
         this.course = course;
+        this.semester = semester;
         this.period = period;
         this.isRepresentative = isRepresentative;
         this.role = role;
