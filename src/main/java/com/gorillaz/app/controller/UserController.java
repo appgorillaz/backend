@@ -36,8 +36,10 @@ public class UserController {
         if (this.userService.findUserByEmail(data.email()) != null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("E-mail utilizado por outro usuário.");
 
+        int semester = data.semester() == 0 ? 1 : data.semester();
+
         String passwordHashed = new BCryptPasswordEncoder().encode(data.password());
-        User user = new User(data.name(), data.email(), passwordHashed, data.ra(), data.gender(), data.course(), data.period(), data.isRepresentative(), data.role());
+        User user = new User(data.name(), data.email(), passwordHashed, data.ra(), data.gender(), data.course(), semester, data.period(), data.isRepresentative(), data.role());
 
         var userCreated = this.userService.save(user);
 

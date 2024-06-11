@@ -56,6 +56,7 @@ public class UserService {
         u.get().setGender(user.gender());
         u.get().setRa(user.ra());
         u.get().setCourse(user.course());
+        u.get().setSemester(user.semester() == 0 ? 1 : user.semester());
         u.get().setPeriod(user.period());
         u.get().setRepresentative(user.representative());
 
