@@ -52,14 +52,7 @@ public class PostController {
 
         var currentDate = LocalDate.now();
 
-        System.out.println("cur"+ currentDate);
-        System.out.println("post" + data.postDate());
-
-        if (data.postDate().isBefore(currentDate)) {
-           return ResponseEntity.badRequest().body("A data da postagem não pode ser maior que a data atual");
-        }
-
-        Post post = new Post(data.title(), data.subtitle(), data.text(), data.postDate(), user, eventId);
+        Post post = new Post(data.title(), data.subtitle(), data.text(), currentDate, user, eventId);
         var postCreated = this.postService.save(post);
 
         if (postCreated == null) {
