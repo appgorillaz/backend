@@ -7,6 +7,9 @@ import com.gorillaz.app.repository.RegistrationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 public class RegistrationService {
 
@@ -19,5 +22,9 @@ public class RegistrationService {
 
     public boolean isUserAlreadyRegisteredToToEvent(User user, Event event) {
         return registrationRepository.existsByUserAndEvent(user, event);
+    }
+
+    public List<Registration> findAllByEventId (UUID eventId) {
+        return registrationRepository.findAllByEvent_Id(eventId);
     }
 }
