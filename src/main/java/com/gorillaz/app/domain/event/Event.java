@@ -38,6 +38,9 @@ public class Event {
     @OneToMany(mappedBy = "eventId")
     Set<Post> posts;
 
+    @OneToMany(mappedBy = "event")
+    Set<Registration> registrations;
+
     public Event(String id) {
         this.id = UUID.fromString(id);
     }
