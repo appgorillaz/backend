@@ -81,7 +81,9 @@ public class PostController {
             return ResponseEntity.notFound().build();
         }
 
-        GetPostDTO postDto = new GetPostDTO(post.getTitle(), post.getSubtitle(), post.getText(), post.getPostDate(), post.getAdmId().getName(), post.getEventId().getId());
+        var eventId = post.getEventId() != null ? post.getEventId().getId() : null;
+
+        GetPostDTO postDto = new GetPostDTO(post.getTitle(), post.getSubtitle(), post.getText(), post.getPostDate(), post.getAdmId().getName(), eventId);
 
         return ResponseEntity.ok(postDto);
     }
