@@ -1,19 +1,17 @@
 package com.gorillaz.app.controller;
 
-import com.gorillaz.app.domain.event.Event;
-import com.gorillaz.app.domain.event.Registration;
-import com.gorillaz.app.domain.event.RegistrationDTO;
+import com.gorillaz.app.domain.event.*;
 import com.gorillaz.app.service.EventService;
 import com.gorillaz.app.service.RegistrationService;
 import com.gorillaz.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/registration")
@@ -27,6 +25,23 @@ public class RegistrationController {
 
     @Autowired
     private RegistrationService registrationService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<UserEventDTO>>getParticipants(@PathVariable UUID id) {
+        Optional<Event> event = eventService.findEventById(id);
+
+        if (event.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<Registration> registrations = registrationService.findAllByEventId(event.get().getId());
+
+        List<UserEventDTO> userEventDTO = registrations.stream()
+                .map(registration -> new UserEventDTO(registration.getUser().getName()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(userEventDTO);
+    }
 
     @PostMapping
     public ResponseEntity<String> register(@RequestBody RegistrationDTO data) {
