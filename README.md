@@ -8,7 +8,7 @@ Este projeto foi construído utilizando Java, Spring Boot e o banco de dados Pos
 
 Para rodar a API você vai precisar do `maven`, a API vai estar disponível na porta :8081
 
-Para facilitar o uso, é recomendando o uso do IntelliJ com uma sdk recente.
+Para facilitar o uso, é recomendando o uso do IntelliJ com uma jdk recente.
 
 Para rodar o PostgreSQL você vai precisar do `docker` e `docker-compose`.
 Caso esteja usando o Windows você precisa somente baixar o Docker através desse link: https://docs.docker.com/desktop/install/windows-install/
