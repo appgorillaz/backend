@@ -77,4 +77,18 @@ public class UserController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<HttpStatus> deleteProfile() {
+        User user = userService.getAuthenticatedUser();
+
+        if (user == null) {
+            return (ResponseEntity<HttpStatus>) ResponseEntity.status(HttpStatus.UNAUTHORIZED);
+        }
+
+        var userId = user.getId();
+        userService.delete(userId);
+
+        return ResponseEntity.noContent().build();
+    }
 }
