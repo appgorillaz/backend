@@ -64,4 +64,8 @@ public class UserService {
 
         return Optional.of(updated);
    }
+
+   public void delete(UUID id) {
+       userRepository.deleteById(id);
+   }
 }
