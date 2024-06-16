@@ -9,14 +9,17 @@ import com.gorillaz.app.service.EventService;
 import com.gorillaz.app.service.PostService;
 import com.gorillaz.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/posts")
@@ -63,14 +66,33 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity getAllPosts() {
-        var posts = postService.getAll();
+    public ResponseEntity<Map<String, Object>>getAllPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size
+    ) {
+        try {
+            Pageable paging = PageRequest.of(page, size);
 
-        if (posts.isEmpty()) {
-            return ResponseEntity.ok().body("");
+            Page<Post> pagePosts = postService.getAll(paging);
+
+            List<GetPostDTO> posts = pagePosts.getContent().stream()
+                        .map(post -> postService.FormatPostToDTO(post)
+                        )
+                        .collect(Collectors.toList());
+
+            Map<String, Object> response = new HashMap<>();
+
+            response.put("posts", posts);
+            response.put("currentPage", pagePosts.getNumber() + 1);
+            response.put("totalItems", pagePosts.getTotalElements());
+            response.put("totalPages", pagePosts.getTotalPages());
+            response.put("hasNext", pagePosts.hasNext());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return ResponseEntity.ok().body(posts);
     }
 
     @GetMapping("/{id}")
@@ -81,9 +103,7 @@ public class PostController {
             return ResponseEntity.notFound().build();
         }
 
-        var eventId = post.getEventId() != null ? post.getEventId().getId() : null;
-
-        GetPostDTO postDto = new GetPostDTO(post.getTitle(), post.getSubtitle(), post.getText(), post.getPostDate(), post.getAdmId().getName(), eventId);
+        GetPostDTO postDto = postService.FormatPostToDTO(post);
 
         return ResponseEntity.ok(postDto);
     }
