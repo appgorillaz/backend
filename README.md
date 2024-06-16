@@ -8,9 +8,14 @@ Este projeto foi construído utilizando Java, Spring Boot e o banco de dados Pos
 
 Para rodar a API você vai precisar do `maven`, a API vai estar disponível na porta :8081
 
-Para rodar o PostgreSQL você vai precisar do `docker` e `docker-compose`
+Para facilitar o uso, é recomendando o uso do IntelliJ com uma sdk recente.
 
-Com o docker e o docker-compose instalados, você deve rodar o comando abaixo para iniciar os containers do `postgres` e do `pgadmin`.
+Para rodar o PostgreSQL você vai precisar do `docker` e `docker-compose`.
+Caso esteja usando o Windows você precisa somente baixar o Docker através desse link: https://docs.docker.com/desktop/install/windows-install/
+
+(Caso tenha o postgres instalado localmente na máquina, altere a porta do postgres no `docker-compose.yml`, ou do postgres local para evitar erro ao subir a aplicação)
+
+Com o docker e o docker-compose instalados, você deve rodar o comando abaixo no diretório do projeto, para iniciar os containers do `postgres` e do `pgadmin`.
 (caso não rode, insira `sudo` na frente)
 
 ```shell
